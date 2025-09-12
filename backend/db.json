@@ -1,0 +1,105 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Makoenya",
+      "description": "Traditional fried bread served warm",
+      "category": "Meals",
+      "price": 1,
+      "quantity": 15,
+      "image": "/public/images/magwinya.webp",
+      "lowStockThreshold": 5
+    },
+    {
+      "id": "2",
+      "name": "Liphaphatha",
+      "description": "Soft round bread, perfect with tea",
+      "category": "Meals",
+      "price": 1.5,
+      "quantity": 14,
+      "image": "/public/images/liphaphatha.jpg",
+      "lowStockThreshold": 5
+    },
+    {
+      "id": "3",
+      "name": "Fizzer",
+      "description": "Chewy fruit-flavored sweet",
+      "category": "Sweets",
+      "price": 1.5,
+      "quantity": 14,
+      "image": "/public/images/FIZZER.jpg",
+      "lowStockThreshold": 10
+    },
+    {
+      "id": "4",
+      "name": "Yo Jelly Yoghurt",
+      "description": "Delicious fruity yoghurt with jelly",
+      "category": "Dairy",
+      "price": 3,
+      "quantity": 16,
+      "image": "/public/images/yo gelly.jpg",
+      "lowStockThreshold": 5
+    },
+    {
+      "id": "5",
+      "name": "Maskopas Snacks",
+      "description": "Crunchy maize snacks full of flavor",
+      "category": "Snacks",
+      "price": 1,
+      "quantity": 24,
+      "image": "/public/images/maskopas.jpg",
+      "lowStockThreshold": 8
+    },
+    {
+      "id": "6",
+      "name": "Smarties Sweets",
+      "description": "Colorful chocolate candy",
+      "category": "Sweets",
+      "price": 12.5,
+      "quantity": 17,
+      "image": "/public/images/smarties.jpg",
+      "lowStockThreshold": 6
+    },
+    {
+      "id": "7",
+      "name": "Mogodu Full Course Meal",
+      "description": "Traditional tripe meal served with pap",
+      "category": "Meals",
+      "price": 25,
+      "quantity": 5,
+      "image": "/public/images/mogodu.jpg",
+      "lowStockThreshold": 3
+    },
+    {
+      "id": "8",
+      "name": "Chips",
+      "description": "Crispy fried potato chips",
+      "category": "Snacks",
+      "price": 15,
+      "quantity": 3,
+      "image": "/public/images/chips.jpg",
+      "lowStockThreshold": 5
+    },
+    {
+      "id": "9",
+      "name": "Polony",
+      "description": "Sliced polony for sandwiches and snacks",
+      "category": "Meat",
+      "price": 1,
+      "quantity": 18,
+      "image": "/images/polony.jpg",
+      "lowStockThreshold": 4
+    },
+    {
+      "id": "10",
+      "name": "Archar",
+      "description": "Spicy South African pickle condiment",
+      "category": "Condiments",
+      "price": 5,
+      "quantity": 5,
+      "image": "/public/images/archar.jpg",
+      "lowStockThreshold": 3
+    }
+  ],
+  "transactions": []
+}

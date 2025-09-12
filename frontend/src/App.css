@@ -1,0 +1,285 @@
+:root { 
+  --purple-800: #5b21b6;
+  --purple-600: #7c3aed;
+  --muted: #6b7280;
+  --card-bg: #f4f0ff; 
+  --surface: #f7f7fb;
+  --danger: #ff6b6b;
+}
+
+* { box-sizing: border-box; transition: all 0.2s ease; }
+body, html, #root { 
+  height: 100%; 
+  margin: 0; 
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; 
+  background: var(--surface); 
+  color: #0f172a; 
+  line-height: 1.5;
+}
+.app { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, #6a1b9a, #ab47bc);
+  color: #fff;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  box-shadow: 4px 0 25px rgba(0,0,0,0.1);
+  font-family: 'Pacifico', cursive;
+  border-right: 4px solid #fff3e0;
+}
+.sidebar .logo {
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.sidebar ul li a {
+  text-decoration: none;
+  color: #ffe;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  display: block;
+  position: relative;
+  font-family: 'Roboto', sans-serif;
+  transition: all 0.3s ease;
+}
+.sidebar ul li a:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.sidebar ul li a.active {
+  background: rgba(255,255,255,0.25);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+}
+.sidebar ul li a::before {
+  position: absolute;
+  left: -24px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  opacity: 0.8;
+}
+.sidebar ul li a.active::before { content: '🌟'; }
+.sidebar ul li a:hover::before { transform: translateY(-50%) scale(1.2); transition: transform 0.3s ease; }
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/pw-maze-white.png');
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.main {
+  margin-left: 260px;
+  padding: 28px;
+  width: calc(100% - 260px);
+  transition: all 0.3s ease;
+}
+
+.header-row { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 20px; 
+  flex-wrap: wrap; 
+}
+.header-row h1 { margin: 0; font-size: 28px; color: var(--purple-800); }
+
+.menu-grid, .product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+.menu-card, .product-card {
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  position: relative;
+}
+.menu-card:hover, .product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+  background: #e7deff;
+}
+.menu-card img, .product-card img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+.menu-card h3, .product-card h3
+ { font-size: 16px;
+   margin: 6px 0;
+    color: var(--purple-800);
+   }
+.menu-card p, .product-card p { font-size: 13px; color: var(--muted); margin: 0 0 6px 0; }
+.menu-card .price, .product-card .product-price { font-weight: 700; color: var(--purple-600); font-size: 14px; }
+
+
+.product-quantity, .stock-status {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 6px;
+  color: var(--muted);
+}
+.low-stock {
+  border: 2px solid var(--danger);
+  box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+}
+.low-stock .product-quantity,
+.low-stock .stock-status { color: var(--danger); }
+.low-stock-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--danger);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.footer {
+  margin-top: 2rem;
+  text-align: center;
+  padding: 1rem;
+  background: linear-gradient(90deg, var(--purple-800), var(--purple-600));
+  color: white;
+  font-size: 0.9rem;
+  border-radius: 12px;
+}
+
+.btn {
+  padding: 8px 12px;
+  background: #6a4c93;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.3s;
+}
+.btn:hover { background: #593a7b; }
+.btn.small { padding: 6px 10px; font-size: 12px; }
+.btn.outline {
+  background: transparent;
+  border: 1px solid #6a4c93;
+  color: #6a4c93;
+}
+.btn.outline:hover {
+  background: #6a4c93;
+  color: #fff;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; width: 100%; padding: 16px; }
+  .cards { flex-direction: column; gap: 12px; }
+}
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  background: #f4f0ff; 
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.table thead th {
+  background: #6a4c93;
+  color: #fff;
+  font-weight: 700;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.table tbody td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background: rgba(106, 76, 147, 0.1);
+}
+
+.product-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.low-stock {
+  border-left: 4px solid #ff6b6b;
+  font-weight: 600;
+}
+
+.low-stock .product-quantity {
+  color: #ff6b6b;
+}
+
+.available {
+  color: #5b21b6;
+  font-weight: 600;
+}
+
+.not-available {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.btn {
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn.small {
+  margin: 2px 2px;
+}
+
+.btn.outline {
+  background: transparent;
+  border: 1px solid #6a4c93;
+  color: #6a4c93;
+}
+
+.btn.outline:hover {
+  background: #6a4c93;
+  color: #fff;
+}
