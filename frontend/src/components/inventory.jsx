@@ -11,7 +11,7 @@ export default function InventoryTable() {
 
   async function loadProducts() {
     try {
-      const res = await fetch("http://localhost:5000/api/products");
+      const res = await fetch("https://kaytee-projies.onrender.com/api/products");
       const data = await res.json();
       setProducts(data);
     } catch (error) {
@@ -27,7 +27,7 @@ export default function InventoryTable() {
     if (newQuantity < 0) return; // prevent negative stock
 
     try {
-      await fetch(`http://localhost:5000/api/products/${id}`, {
+      await fetch(`https://kaytee-projies.onrender.com/api/products/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...product, quantity: newQuantity }),

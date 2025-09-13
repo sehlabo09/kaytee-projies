@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import API_BASE_URL from "https://kaytee-projies.onrender.com";
 
 export default function Sales() {
   const [products, setProducts] = useState([]);
@@ -12,8 +13,15 @@ export default function Sales() {
   // Load products from backend
   async function loadProducts() {
     try {
-      const res = await fetch("http://localhost:5000/api/products");
-      const data = await res.json();
+      const res = await fetch(`${API_BASE_URL}/api/products`);
+      let data = await res.json();
+
+      // Fix images from public folder
+      data = data.map(p => ({
+        ...p,
+        image: p.image ? `${window.location.origin}${p.image}` : ""
+      }));
+
       setProducts(data);
     } catch (error) {
       console.error("Failed to load products:", error);
@@ -69,7 +77,7 @@ export default function Sales() {
     }
   }
 
-  // Corrected Checkout Function
+  // Checkout
   async function checkout() {
     if (cart.length === 0) {
       alert("Cart is empty!");
@@ -78,14 +86,13 @@ export default function Sales() {
 
     try {
       for (let item of cart) {
-        // Ensure stock is enough
         const product = products.find((p) => p.id === item.id);
         if (!product || product.quantity < item.quantity) {
           alert(`Not enough stock for ${item.name}.`);
           return;
         }
 
-        const res = await fetch("http://localhost:5000/api/transactions", {
+        const res = await fetch(`${API_BASE_URL}/api/transactions`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -203,4 +210,3 @@ export default function Sales() {
     </div>
   );
 }
- 

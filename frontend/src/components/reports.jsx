@@ -9,8 +9,8 @@ export default function Report({ refreshSignal }) {
   async function loadData() {
     try {
       const [prodRes, txRes] = await Promise.all([
-        fetch("http://localhost:5000/api/products"),
-        fetch("http://localhost:5000/api/transactions")
+        fetch("https://kaytee-projies.onrender.com/api/products"),
+        fetch("https://kaytee-projies.onrender.com/api/transactions")
       ]);
 
       setProducts(await prodRes.json());

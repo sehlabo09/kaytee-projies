@@ -4,7 +4,7 @@ export default function Dashboard() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products")
+    fetch("https://kaytee-projies.onrender.com/api/products")
       .then(res => res.json())
       .then(setProducts)
       .catch(err => console.error("Error loading menu:", err));

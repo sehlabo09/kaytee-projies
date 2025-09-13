@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+// Backend API
+const API_BASE_URL = "https://kaytee-projies.onrender.com";
+
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState({ name: "", price: 0, quantity: 0 });
@@ -11,33 +14,53 @@ export default function Products() {
   }, []);
 
   async function loadProducts() {
-    const res = await fetch("http://localhost:5000/api/products");
-    setProducts(await res.json());
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/products`);
+      let data = await res.json();
+
+      // Prepend frontend URL to images so they load in production
+      data = data.map(p => ({
+        ...p,
+        image: p.image ? `${window.location.origin}${p.image}` : ""
+      }));
+
+      setProducts(data);
+    } catch (err) {
+      console.error("Error loading products:", err);
+    }
   }
 
   async function saveProduct(e) {
     e.preventDefault();
-    if (editing) {
-      await fetch(`http://localhost:5000/api/products/${editing.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      setEditing(null);
-    } else {
-      await fetch("http://localhost:5000/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+    try {
+      if (editing) {
+        await fetch(`${API_BASE_URL}/api/products/${editing.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+        setEditing(null);
+      } else {
+        await fetch(`${API_BASE_URL}/api/products`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+      }
+      setForm({ name: "", price: 0, quantity: 0 });
+      loadProducts();
+    } catch (err) {
+      console.error("Error saving product:", err);
     }
-    setForm({ name: "", price: 0, quantity: 0 });
-    loadProducts();
   }
 
   async function deleteProduct(id) {
-    await fetch(`http://localhost:5000/api/products/${id}`, { method: "DELETE" });
-    loadProducts();
+    try {
+      await fetch(`${API_BASE_URL}/api/products/${id}`, { method: "DELETE" });
+      loadProducts();
+    } catch (err) {
+      console.error("Error deleting product:", err);
+    }
   }
 
   return (
@@ -70,7 +93,7 @@ export default function Products() {
         </table>
       </div>
 
-      {/* Form to add/update product is now below the table */}
+      {/* Form to add/update product */}
       <form onSubmit={saveProduct} className="product-form" style={{ marginTop: "20px" }}>
         <input
           name="name"
