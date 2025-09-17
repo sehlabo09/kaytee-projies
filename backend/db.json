@@ -7,7 +7,7 @@
       "category": "Meals",
       "price": 1,
       "quantity": 15,
-      "image": "/public/images/magwinya.webp",
+      "image": "/images/magwinya.webp",
       "lowStockThreshold": 5
     },
     {
@@ -17,7 +17,7 @@
       "category": "Meals",
       "price": 1.5,
       "quantity": 14,
-      "image": "/public/images/liphaphatha.jpg",
+      "image": "/images/liphaphatha.jpg",
       "lowStockThreshold": 5
     },
     {
@@ -27,7 +27,7 @@
       "category": "Sweets",
       "price": 1.5,
       "quantity": 14,
-      "image": "/public/images/FIZZER.jpg",
+      "image": "/images/FIZZER.jpg",
       "lowStockThreshold": 10
     },
     {
@@ -37,7 +37,7 @@
       "category": "Dairy",
       "price": 3,
       "quantity": 16,
-      "image": "/public/images/yo gelly.jpg",
+      "image": "/images/yo-gelly.jpg",
       "lowStockThreshold": 5
     },
     {
@@ -47,7 +47,7 @@
       "category": "Snacks",
       "price": 1,
       "quantity": 24,
-      "image": "/public/images/maskopas.jpg",
+      "image": "/images/maskopas.jpg",
       "lowStockThreshold": 8
     },
     {
@@ -57,7 +57,7 @@
       "category": "Sweets",
       "price": 12.5,
       "quantity": 17,
-      "image": "/public/images/smarties.jpg",
+      "image": "/images/smarties.jpg",
       "lowStockThreshold": 6
     },
     {
@@ -67,7 +67,7 @@
       "category": "Meals",
       "price": 25,
       "quantity": 5,
-      "image": "/public/images/mogodu.jpg",
+      "image": "/images/mogodu.jpg",
       "lowStockThreshold": 3
     },
     {
@@ -77,7 +77,7 @@
       "category": "Snacks",
       "price": 15,
       "quantity": 3,
-      "image": "/public/images/chips.jpg",
+      "image": "/images/chips.jpg",
       "lowStockThreshold": 5
     },
     {
@@ -97,7 +97,7 @@
       "category": "Condiments",
       "price": 5,
       "quantity": 5,
-      "image": "/public/images/archar.jpg",
+      "image": "/images/archar.jpg",
       "lowStockThreshold": 3
     }
   ],
