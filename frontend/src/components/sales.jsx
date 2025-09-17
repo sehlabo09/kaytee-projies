@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import API_BASE_URL from "../config";
 
 export default function Sales() {
   const [products, setProducts] = useState([]);
@@ -12,85 +11,57 @@ export default function Sales() {
 
   async function loadProducts() {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/products`);
-      let data = await res.json();
-
-      data = data.map(p => ({
-        ...p,
-        image: p.image ? `${window.location.origin}${p.image}` : ""
-      }));
-
+      const res = await fetch("http://localhost:5000/api/products");
+      const data = await res.json();
       setProducts(data);
     } catch (error) {
       console.error("Failed to load products:", error);
     }
   }
 
-  // Add product to cart
   function addToCart(product) {
-    if (product.quantity <= 0) {
-      alert("This product is out of stock.");
-      return;
-    }
+    if (product.quantity <= 0) return alert("Out of stock");
 
     const existing = cart.find((p) => p.id === product.id);
     if (existing) {
-      if (existing.quantity < product.quantity) {
+      if (existing.quantity < product.quantity)
         setCart(
           cart.map((p) =>
             p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
           )
         );
-      } else {
-        alert("Cannot add more than available stock.");
-      }
-    } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
-    }
+      else alert("Cannot add more than stock");
+    } else setCart([...cart, { ...product, quantity: 1 }]);
   }
 
-  // Remove product from cart
   function removeFromCart(productId) {
     setCart(cart.filter((p) => p.id !== productId));
   }
 
-  // Update quantity in cart
   function updateCartQuantity(productId, delta) {
     const product = cart.find((p) => p.id === productId);
     if (!product) return;
 
     const stock = products.find((p) => p.id === productId)?.quantity || 0;
-    const newQuantity = product.quantity + delta;
+    const newQty = product.quantity + delta;
 
-    if (newQuantity <= 0) {
-      removeFromCart(productId);
-    } else if (newQuantity <= stock) {
-      setCart(
-        cart.map((p) =>
-          p.id === productId ? { ...p, quantity: newQuantity } : p
-        )
-      );
-    } else {
-      alert("Cannot exceed available stock.");
-    }
+    if (newQty <= 0) removeFromCart(productId);
+    else if (newQty <= stock)
+      setCart(cart.map((p) => (p.id === productId ? { ...p, quantity: newQty } : p)));
+    else alert("Cannot exceed stock");
   }
 
-  // Checkout
+  // **Corrected Checkout**
   async function checkout() {
-    if (cart.length === 0) {
-      alert("Cart is empty!");
-      return;
-    }
+    if (cart.length === 0) return alert("Cart is empty");
 
     try {
       for (let item of cart) {
         const product = products.find((p) => p.id === item.id);
-        if (!product || product.quantity < item.quantity) {
-          alert(`Not enough stock for ${item.name}.`);
-          return;
-        }
+        if (!product || product.quantity < item.quantity)
+          return alert(`Not enough stock for ${item.name}`);
 
-        const res = await fetch(`${API_BASE_URL}/api/transactions`, {
+        const res = await fetch("http://localhost:5000/api/transactions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -103,17 +74,16 @@ export default function Sales() {
 
         if (!res.ok) {
           const err = await res.json();
-          alert(`Failed to record transaction for ${item.name}: ${err.error}`);
-          return;
+          return alert(`Failed to record transaction for ${item.name}: ${err.error}`);
         }
       }
 
       setCart([]);
-      await loadProducts(); // refresh stock
+      await loadProducts();
       alert("Sale completed and recorded!");
     } catch (error) {
       console.error("Checkout error:", error);
-      alert("There was an error recording the sale.");
+      alert("Error recording sale. Check server console.");
     }
   }
 
@@ -121,57 +91,30 @@ export default function Sales() {
 
   return (
     <div className="page">
-      <div className="header-row">
-        <h1>Sales</h1>
-        <p>Sell items and manage inventory</p>
-      </div>
+      <h1>Sales</h1>
 
-      {/* Products Grid */}
       <div className="product-grid">
-        {products.length === 0 ? (
-          <p>No products available.</p>
-        ) : (
-          products.map((p) => (
-            <div
-              key={p.id}
-              className={`product-card ${
-                p.quantity <= LOW_STOCK_THRESHOLD ? "low-stock" : ""
-              }`}
-            >
-              {p.quantity <= LOW_STOCK_THRESHOLD && (
-                <span className="low-stock-badge">Almost Out!</span>
-              )}
-              <img
-                src={p.image || "https://via.placeholder.com/150"}
-                alt={p.name}
-                className="product-img"
-              />
-              <h3>{p.name}</h3>
-              <p className="product-desc">{p.description || "No description available."}</p>
-              <p className="product-price">R{p.price.toFixed(2)}</p>
-              <p className="product-quantity">Stock: {p.quantity}</p>
-              <button
-                className="btn"
-                onClick={() => addToCart(p)}
-                disabled={p.quantity === 0}
-              >
-                {p.quantity === 0 ? "Out of Stock" : "Add to Sale"}
-              </button>
-            </div>
-          ))
-        )}
+        {products.map((p) => (
+          <div
+            key={p.id}
+            className={`product-card ${p.quantity <= LOW_STOCK_THRESHOLD ? "low-stock" : ""}`}
+          >
+            {p.quantity <= LOW_STOCK_THRESHOLD && <span>Almost Out!</span>}
+            <img src={p.image} alt={p.name} />
+            <h3>{p.name}</h3>
+            <p>R{p.price.toFixed(2)}</p>
+            <p>Stock: {p.quantity}</p>
+            <button onClick={() => addToCart(p)} disabled={p.quantity === 0}>
+              {p.quantity === 0 ? "Out of Stock" : "Add to Sale"}
+            </button>
+          </div>
+        ))}
       </div>
 
-      {/* Cart / Sale Summary */}
-      <div className="header-row" style={{ marginTop: "30px" }}>
-        <h2>Current Sale</h2>
-      </div>
-
-      {cart.length === 0 ? (
-        <p>No items in sale.</p>
-      ) : (
-        <div className="table-wrap">
-          <table className="table">
+      {cart.length > 0 && (
+        <div>
+          <h2>Current Sale</h2>
+          <table>
             <thead>
               <tr>
                 <th>Name</th>
@@ -189,20 +132,16 @@ export default function Sales() {
                   <td>{item.quantity}</td>
                   <td>R{(item.price * item.quantity).toFixed(2)}</td>
                   <td>
-                    <button className="btn small" onClick={() => updateCartQuantity(item.id, 1)}>+</button>
-                    <button className="btn small outline" onClick={() => updateCartQuantity(item.id, -1)}>-</button>
-                    <button className="btn small outline" onClick={() => removeFromCart(item.id)}>Remove</button>
+                    <button onClick={() => updateCartQuantity(item.id, 1)}>+</button>
+                    <button onClick={() => updateCartQuantity(item.id, -1)}>-</button>
+                    <button onClick={() => removeFromCart(item.id)}>Remove</button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div style={{ marginTop: "12px", textAlign: "right" }}>
-            <strong>Total: R{total.toFixed(2)}</strong>
-            <button className="btn" onClick={checkout} style={{ marginLeft: "12px" }}>
-              Checkout
-            </button>
-          </div>
+          <strong>Total: R{total.toFixed(2)}</strong>
+          <button onClick={checkout}>Checkout</button>
         </div>
       )}
     </div>
