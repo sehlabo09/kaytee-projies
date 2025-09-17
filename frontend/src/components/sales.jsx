@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import API_BASE_URL from "https://kaytee-projies.onrender.com";
+import API_BASE_URL from "../config";
 
 export default function Sales() {
   const [products, setProducts] = useState([]);
@@ -10,13 +10,11 @@ export default function Sales() {
     loadProducts();
   }, []);
 
-  // Load products from backend
   async function loadProducts() {
     try {
       const res = await fetch(`${API_BASE_URL}/api/products`);
       let data = await res.json();
 
-      // Fix images from public folder
       data = data.map(p => ({
         ...p,
         image: p.image ? `${window.location.origin}${p.image}` : ""
