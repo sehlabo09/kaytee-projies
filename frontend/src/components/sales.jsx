@@ -97,7 +97,7 @@ export default function Sales() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            productId: String(item.id), 
+            productId: String(item.id), // ✅ force string id
             name: item.name,
             price: item.price,
             quantity: item.quantity,
