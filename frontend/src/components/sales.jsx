@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import API_BASE_URL from "https://kaytee-projies.onrender.com";
+
+const API_BASE_URL = "https://kaytee-projies.onrender.com";
 
 export default function Sales() {
   const [products, setProducts] = useState([]);
@@ -17,9 +18,9 @@ export default function Sales() {
       let data = await res.json();
 
       // Fix images from public folder
-      data = data.map(p => ({
+      data = data.map((p) => ({
         ...p,
-        image: p.image ? `${window.location.origin}${p.image}` : ""
+        image: p.image ? `${window.location.origin}${p.image}` : "",
       }));
 
       setProducts(data);
@@ -96,7 +97,7 @@ export default function Sales() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            productId: item.id,
+            productId: String(item.id), 
             name: item.name,
             price: item.price,
             quantity: item.quantity,
@@ -119,7 +120,10 @@ export default function Sales() {
     }
   }
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   return (
     <div className="page">
@@ -149,7 +153,9 @@ export default function Sales() {
                 className="product-img"
               />
               <h3>{p.name}</h3>
-              <p className="product-desc">{p.description || "No description available."}</p>
+              <p className="product-desc">
+                {p.description || "No description available."}
+              </p>
               <p className="product-price">R{p.price.toFixed(2)}</p>
               <p className="product-quantity">Stock: {p.quantity}</p>
               <button
@@ -191,9 +197,24 @@ export default function Sales() {
                   <td>{item.quantity}</td>
                   <td>R{(item.price * item.quantity).toFixed(2)}</td>
                   <td>
-                    <button className="btn small" onClick={() => updateCartQuantity(item.id, 1)}>+</button>
-                    <button className="btn small outline" onClick={() => updateCartQuantity(item.id, -1)}>-</button>
-                    <button className="btn small outline" onClick={() => removeFromCart(item.id)}>Remove</button>
+                    <button
+                      className="btn small"
+                      onClick={() => updateCartQuantity(item.id, 1)}
+                    >
+                      +
+                    </button>
+                    <button
+                      className="btn small outline"
+                      onClick={() => updateCartQuantity(item.id, -1)}
+                    >
+                      -
+                    </button>
+                    <button
+                      className="btn small outline"
+                      onClick={() => removeFromCart(item.id)}
+                    >
+                      Remove
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -201,7 +222,11 @@ export default function Sales() {
           </table>
           <div style={{ marginTop: "12px", textAlign: "right" }}>
             <strong>Total: R{total.toFixed(2)}</strong>
-            <button className="btn" onClick={checkout} style={{ marginLeft: "12px" }}>
+            <button
+              className="btn"
+              onClick={checkout}
+              style={{ marginLeft: "12px" }}
+            >
               Checkout
             </button>
           </div>
