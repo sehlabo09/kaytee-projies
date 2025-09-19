@@ -17,6 +17,7 @@ function writeDB(data) {
   fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 }
 
+// --- Products ---
 app.get("/api/products", (req, res) => {
   res.json(readDB().products);
 });
@@ -31,7 +32,7 @@ app.post("/api/products", (req, res) => {
 
 app.put("/api/products/:id", (req, res) => {
   const db = readDB();
-  const idx = db.products.findIndex((p) => p.id === req.params.id);
+  const idx = db.products.findIndex((p) => p.id.toString() === req.params.id.toString());
   if (idx === -1) return res.status(404).json({ error: "Product not found" });
 
   db.products[idx] = { ...db.products[idx], ...req.body };
@@ -41,11 +42,12 @@ app.put("/api/products/:id", (req, res) => {
 
 app.delete("/api/products/:id", (req, res) => {
   const db = readDB();
-  db.products = db.products.filter((p) => p.id !== req.params.id);
+  db.products = db.products.filter((p) => p.id.toString() !== req.params.id.toString());
   writeDB(db);
   res.json({ message: "Product deleted" });
 });
 
+// --- Transactions ---
 app.get("/api/transactions", (req, res) => {
   res.json(readDB().transactions);
 });
@@ -58,7 +60,10 @@ app.post("/api/transactions", (req, res) => {
   }
 
   const db = readDB();
-  const product = db.products.find((p) => p.id === productId);
+  const product = db.products.find(
+    (p) => p.id.toString() === productId.toString()
+  );
+
   if (!product) return res.status(404).json({ error: "Product not found" });
 
   if (product.quantity < quantity) {
@@ -70,20 +75,22 @@ app.post("/api/transactions", (req, res) => {
 
   // Record transaction
   const transaction = {
-    id: Date.now().toString() + Math.floor(Math.random() * 1000), 
-    productId,
+    id: Date.now().toString() + Math.floor(Math.random() * 1000),
+    productId: String(productId),
     name,
     quantity,
     price,
-    subtotal: price * quantity, 
+    subtotal: price * quantity,
     date: new Date().toISOString(),
   };
 
   db.transactions.push(transaction);
   writeDB(db);
 
+  console.log("✅ Transaction recorded:", transaction);
+
   res.status(201).json(transaction);
 });
 
-const PORT = 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
