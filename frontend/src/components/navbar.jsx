@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Sidebar() {
+export default function navbar() {
   return (
-    <nav className="sidebar">
+    <nav className="navbar">
       <h2 className="logo"> Wings Cafe</h2>
       <ul>
         <li><Link to="/">Dashboard</Link></li>
